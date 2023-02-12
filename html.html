@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <link rel="icon" href="https://cdn2.iconfinder.com/data/icons/ios7-inspired-mac-icon-set/512/Calculator_512.png" type="image/x-icon" >
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
     <title>Calculadora</title>
-    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
+    
     <div id="app">
+
         <div id="calculation">
-            <div id="calc">0</div>
+            <span id="calc">0</span>
             <div class="result">
-                <img src="./assets/eguals.svg" alt="Equals" class="equals-calc">
+                <img src="./assets/equals-calculation.svg" alt="Equals" class="equals-calc">
                 <span id="result-calc">0</span>
             </div>
         </div>
@@ -48,9 +51,9 @@
             <button class="button equals-result" onclick="calculate()"><img src="./assets/equals-keyboard.svg" alt="="></button>
 
         </div>
-        
+
     </div>
 
-    <script src="./assets/js/index.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>

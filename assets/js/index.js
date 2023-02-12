@@ -1,113 +1,85 @@
-const previousOperationText = document.querySelector('#previous-operation');
-const currentOperationText = document.querySelector('#current-operation span');
-const buttons = document.querySelectorAll('#keyboard button');
-
-class calculator {
-    constructor(previousOperationText, currentOperationText) {
-        this.previousOperationText = previousOperationText
-        this.currentOperationText = currentOperationText
-        this.currentOperation = ""
-    }
-
-    // add digit to calculator screem  
-    addDigit(digit) {
-        // check if current operation has a dot
-        if(digit === '.' && this.currentOperationText.innerText.includes(".")){
-            return;
-        }
-
-        this.currentOperation = digit;
-        this.updateScreem();
-    }
-
-    // Process all calculator operations
-    processOperation(operation) {
-        // Check if current is empty
-        if(this.currentOperationText.innerText === "") {
-
-            //Change operation 
-            if(this.previousOperationText.innerText !== "") {
-                this.changerOperation(operation);
-            } return;
-        }
-
-        // Get current and previous value 
-        let operationValue;
-        const previous = +this.previousOperationText.innerText.split(" ")[0];
-        const current = +this.currentOperationText.innerText;
-
-        switch(operation) {
-           
-            case "+":
-                operationValue = previous + current
-                this.updateScreem(operationValue, operation, current, previous);
-                break;
-            case "-":
-                operationValue = previous - current
-                this.updateScreem(operationValue, operation, current, previous);
-                break;
-            case "x":
-                operationValue = previous * current
-                this.updateScreem(operationValue, operation, current, previous);
-                break;
-            case "÷":
-                operationValue = previous / current
-                this.updateScreem(operationValue, operation, current, previous);
-                break;
-            case "%":
-                operationValue = previous * current /100
-                this.updateScreem(operationValue, operation, current, previous);
-                break;
-            default:
-                return;
-        }
-    }
-
-    // Change values of the calculator screem
-    updateScreem(
-        operationValue = null, 
-        operation = null, 
-        current = null, 
-        previous = null
+function insert (num) {
+    let defaultValue = document.getElementById('calc').innerHTML;
+    if (defaultValue == "0") {
+        if(
+            num == "x" || 
+            num == "÷" || 
+            num == "+" || 
+            num == "-" || 
+            num == ","
         ) {
-
-            if(operationValue === null) {
-                this.currentOperationText.innerText += this.currentOperation;
-            }else {
-                // Check if value is zero, if it is just add current value
-                if(previous === 0) {
-                    operationValue = current
-                }
-                // Add current value to previuos
-                this.previousOperationText.innerText = `${operationValue} 
-                ${operation}`
-                this.currentOperationText.innerText = "";
-            }
-    }
-
-    // Change math operation
-    changerOperation(operation) {
-        const mathOperation = ["+", "-", "%", "x", "÷", "+/-"]
-
-        if(!mathOperation.includes(operation)) {
-            return
+            document.getElementById('calc').innerHTML = "0";
+        } else {
+            document.getElementById('calc').innerHTML = "";
+            document.getElementById('calc').innerHTML = num;
         }
-
-        this.previousOperationText.innerText = this.previousOperationText.innerText.slice(0, -1) + operation;
+        
+    } else {
+        if (defaultValue.length >= 14) {
+            document.getElementById('calc').innerHTML += "";
+        } else {
+            let lastCharacter = document.getElementById('calc').innerHTML.slice(-1);
+            if(
+                (
+                    lastCharacter == "x" || 
+                    lastCharacter == "÷" || 
+                    lastCharacter == "+" || 
+                    lastCharacter == "-" || 
+                    lastCharacter == ","
+                ) 
+                && 
+                (
+                    num == "x" || 
+                    num == "÷" || 
+                    num == "+" || 
+                    num == "-" || 
+                    num == ","
+                )
+            ) {
+                document.getElementById('calc').innerHTML += "";
+                console.log('caiu aqui')
+            } else {
+                document.getElementById('calc').innerHTML += num;
+                console.log('agora caiu aqui')
+            }
+            
+        }
     }
 }
 
-const calc = new calculator(previousOperationText, currentOperationText);
+function clean () {
+    document.getElementById('calc').innerHTML = "0";
+    document.getElementById('result-calc').innerHTML = "0";
+}
 
-
-buttons.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-        const value = e.target.innerText;
-
-        if (+value >= 0 || value === '.') {
-            calc.addDigit(value);
+function cancelEntry () {
+    let result = document.getElementById('calc').innerHTML;
+    if (result != "0") {
+        if (result.length == 1) {
+            document.getElementById('calc').innerHTML = "0";
+            document.getElementById('result-calc').innerHTML = "0";
         } else {
-            calc.processOperation(value);
+            document.getElementById('calc').innerHTML = result.substring(0, result.length -1);
+        }  
+    }
+}
+
+function calculate () {
+    try {
+        let result = document.getElementById('calc').innerHTML;
+        let resultAlt = result.replaceAll("÷", "/").replaceAll("x", "*").replaceAll(",", ".");
+    
+    if (result) {
+        let resultCalc = eval(resultAlt);
+        if (resultCalc.toString().length >= 12) {
+            document.getElementById('result-calc').innerHTML = "Valor gigante";
+        } else {
+            document.getElementById('result-calc').innerHTML = resultCalc.toString().replaceAll(".", ",");
         }
-    });
-});
+    }
+    } catch (e) {
+        console.log(e);
+        document.getElementById('calc').innerHTML = "0";
+        document.getElementById('result-calc').innerHTML = "0";
+    }
+}
